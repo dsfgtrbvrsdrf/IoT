@@ -13,6 +13,8 @@ All components are designed to work within a Dockerized environment.
 - Authors
 
 ## Project Overview
+![Project](./plan.svg)
+
 This project demonstrates how IoT devices, combined with modern machine learning models, can enable seamless remote data processing. Key highlights include:
 - Encrypted MQTT communication with ESP8266.
 - Real-time video object detection using YOLOv5.
