@@ -1,0 +1,52 @@
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=ESP12341231241351345
+      - DOCKER_INFLUXDB_INIT_PASSWORD=ESP12341231241351345
+      - DOCKER_INFLUXDB_INIT_ORG=mqtt
+      - DOCKER_INFLUXDB_INIT_BUCKET=temperature
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=gLpjV3gz8gsAwiC7mnIjoKl6JpbQRrQnWMJsfpIfsr9oWVMCb8nv5w5s1mdW7kZPk3S2u6HWh7irThtjcc0Lug==
+
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INFLUXDB_URL=http://influxdb:8086
+      - GF_INFLUXDB_TOKEN=gLpjV3gz8gsAwiC7mnIjoKl6JpbQRrQnWMJsfpIfsr9oWVMCb8nv5w5s1mdW7kZPk3S2u6HWh7irThtjcc0Lug==  # добавьте сюда токен
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+  mqtt-influxdb:
+    image: mqtt-influxdb
+    container_name: mqtt-influxdb
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=lG0U5qbLYBQulnyU86fbLNRTe7YsSPrkOZz2f2y59gN64SbWy9Yq6ZHJx7Imu1XEpe70VTHTE9p_y4sNQW9Xog==
+      - INFLUXDB_ORG=mqtt
+      - INFLUXDB_BUCKET=temperature
+      - MQTT_BROKER_ADDRESS=n113916d.ala.eu-central-1.emqxsl.com
+      - MQTT_PORT=8883
+      - MQTT_TOPICS=esp/temperature,esp/speech_to_text,esp/video_to_text
+      - MQTT_USERNAME=ESP12341231241351345
+      - MQTT_PASSWORD=ESP12341231241351345
+      - MQTT_CERT_PATH=emqxsl-ca.txt.crt
+
+volumes:
+  influxdb_data:
+  grafana_data:
