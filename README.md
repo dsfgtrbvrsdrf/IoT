@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-![Table for Usage](./images/table.svg)
+![Table for Usage](./table.svg)
 
 
 Start the Application
